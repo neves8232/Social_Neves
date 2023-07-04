@@ -35,3 +35,13 @@ class LikePost(models.Model):
 
     def __str__(self):
         return self.username
+
+class Comment(models.Model):
+    user = models.CharField(max_length=100)
+    img_url = models.CharField(max_length=500, default="/media/blank_profile.png")
+    body = models.TextField()
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from .models import Profile, Post, LikePost
+from .models import Profile, Post, LikePost, Comment
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
@@ -14,7 +14,9 @@ def index(request):
 
     posts = Post.objects.all()
 
-    return render(request, 'index.html', {'user_profile': user_profile, 'posts': posts})
+    comments = Comment.objects.all()
+
+    return render(request, 'index.html', {'user_profile': user_profile, 'posts': posts, 'comments': comments})
 
 @login_required(login_url='signin')
 def upload(request):

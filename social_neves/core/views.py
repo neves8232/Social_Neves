@@ -21,10 +21,10 @@ def index(request):
 @login_required(login_url='signin')
 def upload(request):
     if request.method == 'POST':
-        user_object = User.objects.get(username=request.user.username)
+        user = request.user.username
+        user_object = User.objects.get(username=user)
         user_profile = Profile.objects.get(user=user_object)
         img_url = user_profile.profileimg.url
-        user = request.user.username
         image = request.FILES.get('image_upload')
         caption = request.POST['caption']
 
@@ -51,13 +51,31 @@ def like_post(request):
     if like_filter == None:
         new_like = LikePost.objects.create(post_id=post_id, username=username)
         new_like.save()
-        post.no_of_likes = post.no_of_likes + 1
+        post.no_of_likes += 1
         post.save()
         return redirect('/')
     else:
         post.no_of_likes -= 1
         like_filter.delete()
         post.save()
+        return redirect('/')
+
+@login_required(login_url='signin')
+def comment(request):
+    if request.method == 'POST':
+        user = request.user.username
+        user_object = User.objects.get(username=user)
+        user_profile = Profile.objects.get(user=user_object)
+        img_url = user_profile.profileimg.url
+        comment = request.POST['comment']
+        post_id = request.POST['post_id']
+
+        post = Post.objects.get(id=post_id)
+        post.no_of_comments += 1
+        post.save()
+
+        new_comment = Comment.objects.create(user=user, img_url=img_url, body=comment, post=post)
+        new_comment.save()
         return redirect('/')
 
 @login_required(login_url='signin')

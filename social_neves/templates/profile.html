@@ -52,7 +52,7 @@
 					{% if user_object.username == user.username %}
 					<a href="/settings" data-ripple="" type="submit" style="background-color: #ffc0cb; border: #ffc0cb;">Account settings</a>
 					{% else %}
-					<a data-ripple=""><button type="submit" style="background-color: #ffc0cb; border: #ffc0cb;">Follow</button></a>
+					<a data-ripple=""><button type="submit" style="background-color: #ffc0cb; border: #ffc0cb;">{{button_text}}</button></a>
 					{% endif %}
 
 					</div>
@@ -144,8 +144,8 @@
 									<ul class="photos">
 										{% for post in user_posts %}
 										<li>
-											<a class="strip" href="{{post.img_url}}" title="" data-strip-group="mygroup" data-strip-group-options="loop: false">
-												<img src="{{post.img_url}}" style="height: 250px; width: 300px;" alt=""></a>
+											<a class="strip" href="{{post.image.url}}" title="" data-strip-group="mygroup" data-strip-group-options="loop: false">
+												<img src="{{post.image.url}}" style="height: 250px; width: 300px;" alt=""></a>
 										</li>
 										{% endfor %}
 

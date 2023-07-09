@@ -14,23 +14,28 @@ def index(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile = Profile.objects.get(user=user_object)
 
-    posts = Post.objects.all()
+    user_following = FollowersCount.objects.filter(follower=request.user.username)
 
     comments = Comment.objects.all()
 
-    user_following_list = []
-    feed = []
+    if request.method == 'POST' and 'show_all' in request.POST:
+        posts = Post.objects.all()
 
-    user_following = FollowersCount.objects.filter(follower=request.user.username)
+    else:
 
-    for users in user_following:
-        user_following_list.append(users.user)
+        user_following_list = []
+        feed = []
 
-    for usernames in user_following_list:
-        feed_lists = Post.objects.filter(user=usernames)
-        feed.append(feed_lists)
 
-    feed_list = list(chain(*feed))
+
+        for users in user_following:
+            user_following_list.append(users.user)
+
+        for usernames in user_following_list:
+            feed_lists = Post.objects.filter(user=usernames)
+            feed.append(feed_lists)
+
+        posts = list(chain(*feed))
 
     #sugestoes de users
     numero_de_seguidores = 5
@@ -58,7 +63,7 @@ def index(request):
 
     suggestions_username_profile_list = list(chain(*username_profile_list))
 
-    context = {'user_profile': user_profile, 'posts': feed_list, 'comments': comments,
+    context = {'user_profile': user_profile, 'posts': posts, 'comments': comments,
                'suggestions_username_profile_list': suggestions_username_profile_list[:numero_de_seguidores]}
 
     return render(request, 'index.html', context)

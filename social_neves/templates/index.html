@@ -206,15 +206,20 @@
                     <div class="space-y-5 flex-shrink-0 lg:w-7/12">
 
                         <!-- post 1-->
-                        {% if not posts %}
 
-                            <!-- post header-->
-                            <div class="flex justify-between items-center px-4 py-3">
-                                <h2 class="font-semibold text-lg"> <strong>FOLLOW SOMEONE </strong> </h2>
+                            {% if not posts %}
+                                <!-- If posts is empty, display 'FOLLOW SOMEONE' and the button -->
+                                <div class="flex justify-between items-center px-4 py-3">
+                                    <h2 class="font-semibold text-lg"> <strong>FOLLOW SOMEONE </strong> </h2>
+                                    <form action="{% url 'index' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="show_all" value="true">
+                                        <button type="submit" class="bg-pink-500 flex font-bold hidden hover:bg-pink-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shado text-white"> <strong>Or you can see everypost </strong> </button>
+                                    </form>
+                                </div>
+                            {% endif %}
 
-                            </div>
 
-                        {% endif %}
 
                         {% for post in posts reversed %}
                         <div class="bg-white shadow rounded-md  -mx-2 lg:mx-0">
@@ -384,6 +389,11 @@
     
                         </div>
                         {% endfor %}
+
+
+
+
+
     
 
                     </div>
